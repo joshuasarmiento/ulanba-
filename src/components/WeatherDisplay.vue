@@ -97,13 +97,13 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Panahon Ngayon sa <br> {{ selectedCity.name }}</h2>
                 <p class="text-5xl font-extrabold text-gray-900">{{ weatherData.current.temp_c }}°C</p>
                 <p class="text-gray-600 mb-2">Feels like: {{ weatherData.current.feelslike_c }}°C</p>
-                <div class="flex items-center">
+                <div class="flex items-center justify-center">
                     <img :src="getWeatherIcon(weatherData.current.condition.text, weatherData.current.is_day)"
-                        alt="Weather Icon" class="w-32 h-auto" />
+                        alt="Weather Icon" class="w-32 h-auto " />
                     <div class="relative text-lg capitalize font-semibold text-gray-700">
                         <p> {{ weatherData.current.condition.text }}</p>
                         <span :class="getWindWarningBadge(weatherData.current.wind_kph).color"
-                            class="absolute -top-6 -right-2 px-2 py-1 rounded-full text-[0.7rem] font-semibold flex items-center">
+                            class="absolute -top-6 right-4 px-2 py-1 rounded-full text-[0.7rem] font-semibold flex items-center">
                             <span :class="getWindWarningBadge(weatherData.current.wind_kph).dotColor"
                                 class="relative flex h-2 w-2">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="flex justify-around w-full mt-4 text-sm text-gray-600">
-                    <div class="flex items-center">
+                    <div class="flex items-center text-xs">
                         <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -124,7 +124,7 @@
                         </svg>
                         <span>{{ weatherData.current.humidity }}% Humidity</span>
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex items-center text-xs">
                         <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -135,8 +135,27 @@
                         </svg>
                         <div class="">
                             <span>{{ weatherData.current.wind_kph }} kph Wind </span>
-
                         </div>
+                    </div>
+                </div>
+                <div class="flex justify-around w-full mt-4 text-sm text-gray-600">
+                    <div class="flex items-center text-xs">
+                        <svg class="w-6 h-6 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h1M3 12H2m15.325-7.757l.707-.707M3.929 19.071l.707-.707m0-14.142l-.707-.707M19.071 19.071l-.707-.707M12 18a6 6 0 100-12 6 6 0 000 12z">
+                            </path>
+                        </svg>
+                        <span>Sunrise: {{ weatherData.forecast.forecastday[0].astro.sunrise }}</span>
+                    </div>
+                    <div class="flex items-center text-xs">
+                        <svg class="w-6 h-6 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9 9 0 008.354-5.646z">
+                            </path>
+                        </svg>
+                        <span>Sunset: {{ weatherData.forecast.forecastday[0].astro.sunset }}</span>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,24 @@
 <template>
     <section class="mb-6">
-        <!-- <h2 class="text-xl font-bold mb-3 text-gray-800">Saan ka?</h2> -->
+        <!-- Favorite Cities -->
+        <div v-if="favorites.length > 0" class="mb-4 p-4 bg-white rounded-lg shadow">
+            <h3 class="font-bold text-gray-800 mb-2">Mga Paboritong Lungsod:</h3>
+            <div class="flex flex-wrap gap-2">
+                <span v-for="favCity in favorites" :key="favCity.name"
+                    class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer"
+                    @click="emit('update:selectedCity', favCity)">
+                    {{ favCity.name }}
+                    <button type="button" class="ml-1 -mr-0.5 h-3.5 w-3.5 rounded-full inline-flex items-center justify-center text-blue-700 hover:bg-blue-200"
+                        @click.stop="emit('remove-favorite', favCity)">
+                        <span class="sr-only">Remove {{ favCity.name }}</span>
+                        <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                        </svg>
+                    </button>
+                </span>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
             <Listbox :modelValue="selectedRegionCode" @update:modelValue="emit('update:selectedRegionCode', $event)">
                 <div class="relative mt-1">
@@ -111,10 +129,28 @@
                                     active ? 'bg-blue-100 text-blue-900' : 'text-gray-900',
                                     'relative cursor-default select-none py-2 pl-10 pr-4',
                                 ]">
-                                    <span :class="[
-                                        selected ? 'font-medium' : 'font-normal',
-                                        'block truncate',
-                                    ]">{{ city.name }}</span>
+                                    <div class="flex items-center justify-between">
+                                        <span :class="[
+                                            selected ? 'font-medium' : 'font-normal',
+                                            'block truncate',
+                                        ]">{{ city.name }}</span>
+                                        <button v-if="selected && !favorites.some(fav => fav.name === city.name)"
+                                            @click.stop="emit('add-favorite', city)"
+                                            class="ml-2 p-1 rounded-full text-gray-400 hover:bg-gray-200 hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/75"
+                                            title="Add to Favorites">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                                <path d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" />
+                                            </svg>
+                                        </button>
+                                        <button v-else-if="selected && favorites.some(fav => fav.name === city.name)"
+                                            @click.stop="emit('remove-favorite', city)"
+                                            class="ml-2 p-1 rounded-full text-red-400 hover:bg-red-200 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/75"
+                                            title="Remove from Favorites">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94l-1.72-1.72z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                     <span v-if="selected"
                                         class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#56A0EE]">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -150,11 +186,14 @@ const props = defineProps({
     selectedRegionCode: String,
     selectedProvinceCode: String,
     selectedCity: Object,
+    favorites: Array,
 })
 
 const emit = defineEmits([
     'update:selectedRegionCode',
     'update:selectedProvinceCode',
     'update:selectedCity',
+    'add-favorite',
+    'remove-favorite',
 ])
 </script>

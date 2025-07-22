@@ -14,6 +14,24 @@ const selectedRegionCode = ref(null)
 const selectedProvinceCode = ref(null)
 const selectedCity = ref(null)
 
+const favorites = ref(JSON.parse(localStorage.getItem('weatherFavorites') || '[]'))
+
+const saveFavorites = () => {
+    localStorage.setItem('weatherFavorites', JSON.stringify(favorites.value))
+}
+
+const addFavorite = (city) => {
+    if (!favorites.value.some(fav => fav.name === city.name)) {
+        favorites.value.push(city)
+        saveFavorites()
+    }
+}
+
+const removeFavorite = (city) => {
+    favorites.value = favorites.value.filter(fav => fav.name !== city.name)
+    saveFavorites()
+}
+
 const weatherData = ref(null)
 const loading = ref(false)
 const error = ref(null)
@@ -271,9 +289,11 @@ onMounted(async () => {
             <AppHeader :weatherData="weatherData" :getWeatherIcon="getWeatherIcon" />
             <LocationSelector :regions="regions" :provinces="provinces" :cities="cities"
                 :selectedRegionCode="selectedRegionCode" :selectedProvinceCode="selectedProvinceCode"
-                :selectedCity="selectedCity" @update:selectedRegionCode="selectedRegionCode = $event"
+                :selectedCity="selectedCity" :favorites="favorites" @update:selectedRegionCode="selectedRegionCode = $event"
                 @update:selectedProvinceCode="selectedProvinceCode = $event"
-                @update:selectedCity="selectedCity = $event" />
+                @update:selectedCity="selectedCity = $event"
+                @add-favorite="addFavorite"
+                @remove-favorite="removeFavorite" />
 
             <WeatherDisplay :weatherData="weatherData" :loading="loading" :error="error" :selectedCity="selectedCity"
                 :selectedRegionCode="selectedRegionCode" :getWeatherIcon="getWeatherIcon" :formatDate="formatDate"
