@@ -267,36 +267,17 @@ onMounted(async () => {
 
 <template>
     <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 font-sans">
-        <AppHeader
-            :weatherData="weatherData"
-            :getWeatherIcon="getWeatherIcon"
-        />
-
         <main class="flex-grow p-4 max-w-6xl mx-auto w-full">
-            <LocationSelector
-                :regions="regions"
-                :provinces="provinces"
-                :cities="cities"
-                :selectedRegionCode="selectedRegionCode"
-                :selectedProvinceCode="selectedProvinceCode"
-                :selectedCity="selectedCity"
-                @update:selectedRegionCode="selectedRegionCode = $event"
+            <AppHeader :weatherData="weatherData" :getWeatherIcon="getWeatherIcon" />
+            <LocationSelector :regions="regions" :provinces="provinces" :cities="cities"
+                :selectedRegionCode="selectedRegionCode" :selectedProvinceCode="selectedProvinceCode"
+                :selectedCity="selectedCity" @update:selectedRegionCode="selectedRegionCode = $event"
                 @update:selectedProvinceCode="selectedProvinceCode = $event"
-                @update:selectedCity="selectedCity = $event"
-            />
+                @update:selectedCity="selectedCity = $event" />
 
-            <WeatherDisplay
-                :weatherData="weatherData"
-                :loading="loading"
-                :error="error"
-                :selectedCity="selectedCity"
-                :selectedRegionCode="selectedRegionCode"
-                :getWeatherIcon="getWeatherIcon"
-                :formatDate="formatDate"
-                :formatDateTime="formatDateTime"
-                :getWeatherAdvice="getWeatherAdvice"
-                :formatTime="formatTime"
-            />
+            <WeatherDisplay :weatherData="weatherData" :loading="loading" :error="error" :selectedCity="selectedCity"
+                :selectedRegionCode="selectedRegionCode" :getWeatherIcon="getWeatherIcon" :formatDate="formatDate"
+                :formatDateTime="formatDateTime" :getWeatherAdvice="getWeatherAdvice" :formatTime="formatTime" />
         </main>
 
         <AppFooter />
