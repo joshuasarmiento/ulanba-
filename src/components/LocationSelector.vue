@@ -30,7 +30,7 @@
                                         'block truncate',
                                     ]">{{ region.name }}</span>
                                     <span v-if="selected"
-                                        class="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
+                                        class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#56A0EE]">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                             fill="currentColor" class="h-5 w-5" aria-hidden="true">
                                             <path fill-rule="evenodd"
@@ -73,7 +73,7 @@
                                         'block truncate',
                                     ]">{{ province.name }}</span>
                                     <span v-if="selected"
-                                        class="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
+                                        class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#56A0EE]">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                             fill="currentColor" class="h-5 w-5" aria-hidden="true">
                                             <path fill-rule="evenodd"
@@ -116,7 +116,7 @@
                                         'block truncate',
                                     ]">{{ city.name }}</span>
                                     <span v-if="selected"
-                                        class="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
+                                        class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#56A0EE]">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                             fill="currentColor" class="h-5 w-5" aria-hidden="true">
                                             <path fill-rule="evenodd"

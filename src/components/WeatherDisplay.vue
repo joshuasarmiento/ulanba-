@@ -57,12 +57,12 @@
                                 Bagyo, laging sumangguni sa opisyal na anunsyo ng PAGASA.</div>
                             <div class="flex flex-col gap-1">
                                 <a href="https://www.pagasa.dost.gov.ph/weather/weather-advisory"
-                                    class="text-blue-600 hover:underline font-semibold" target="_blank"
+                                    class="text-[#56A0EE] hover:underline font-semibold" target="_blank"
                                     rel="noopener noreferrer">
                                     Tingnan ang Latest PAGASA Weather Advisory
                                 </a>
                                 <a href="https://www.pagasa.dost.gov.ph/flood"
-                                    class="text-blue-600 hover:underline font-semibold" target="_blank"
+                                    class="text-[#56A0EE] hover:underline font-semibold" target="_blank"
                                     rel="noopener noreferrer">
                                     PAGASA Flood Information
                                 </a>
@@ -79,7 +79,7 @@
                         </div>
                     </DialogDescription>
 
-                    <!-- <button @click="closeLpaAdvisory" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                    <!-- <button @click="closeLpaAdvisory" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-[#56A0EE]">
                         Got it!
                     </button> -->
                 </DialogPanel>
@@ -133,7 +133,7 @@
                             class="w-16 my-2 h-auto mx-auto" />
                         <p class="font-semibold text-lg">{{ day.day.maxtemp_c }}° / {{ day.day.mintemp_c }}°</p>
                         <p class="text-sm text-gray-600 capitalize">{{ day.day.condition.text }}</p>
-                        <div class="flex items-center justify-center mt-2 text-sm text-blue-600">
+                        <div class="flex items-center justify-center mt-2 text-sm text-[#56A0EE]">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -182,7 +182,7 @@
                                         <img :src="getWeatherIcon(hour.condition.text, hour.is_day)" alt="Weather Icon"
                                             class="w-12 h-auto mx-auto my-1" />
                                         <p class="font-semibold text-md">{{ hour.temp_c }}°C</p>
-                                        <p class="text-xs text-blue-600">{{ hour.chance_of_rain }}% Rain</p>
+                                        <p class="text-xs text-[#56A0EE]">{{ hour.chance_of_rain }}% Rain</p>
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +198,7 @@
                 <h2 class="font-bold text-gray-800 mb-2">Weather Synopsis (PAGASA)</h2>
                 <p>
                     Para sa opisyal na ulat panahon mula sa PAGASA, laging bisitahin ang kanilang website:
-                    <a href="https://www.pagasa.dost.gov.ph/weather" class="text-blue-600 hover:underline"
+                    <a href="https://www.pagasa.dost.gov.ph/weather" class="text-[#56A0EE] hover:underline"
                         target="_blank" rel="noopener noreferrer">PAGASA Weather Forecast</a>.
                 </p>
             </div>
