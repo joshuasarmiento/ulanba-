@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 mt-4">
             <Listbox :modelValue="selectedRegionCode" @update:modelValue="emit('update:selectedRegionCode', $event)">
                 <div class="relative mt-1">
                     <ListboxButton
