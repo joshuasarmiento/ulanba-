@@ -1,9 +1,20 @@
 <template>
-    <div v-if="alerts && alerts.alert && alerts.alert.length > 0" class="my-4">
-        <div v-for="(alert, index) in alerts.alert" :key="index" class="p-4 rounded-lg" :class="alertClass(alert.severity)">
+    <div v-if="alertsWithToggle.length > 0" class="my-4">
+        <div v-for="(alert, index) in alertsWithToggle" :key="index" class="p-4 rounded-lg" :class="alertClass(alert.severity)">
             <h3 class="font-bold text-lg mb-2">{{ alert.headline }}</h3>
-            <p class="text-sm">{{ alert.desc }}</p>
-            <p v-if="alert.instruction" class="text-sm mt-2"><strong>Instruction:</strong> {{ alert.instruction }}</p>
+            <p class="text-sm">
+                {{ alert.showFullDesc ? alert.desc : truncateText(alert.desc) }}
+                <span v-if="alert.desc && alert.desc.length > 150" class="text-blue-600 cursor-pointer" @click="alert.showFullDesc = !alert.showFullDesc">
+                    {{ alert.showFullDesc ? 'Read Less' : '...Read More' }}
+                </span>
+            </p>
+            <p v-if="alert.instruction" class="text-sm mt-2">
+                <strong>Instruction:</strong>
+                {{ alert.showFullInstruction ? alert.instruction : truncateText(alert.instruction) }}
+                <span v-if="alert.instruction && alert.instruction.length > 150" class="text-blue-600 cursor-pointer" @click="alert.showFullInstruction = !alert.showFullInstruction">
+                    {{ alert.showFullInstruction ? 'Read Less' : '...Read More' }}
+                </span>
+            </p>
             <div class="text-xs mt-2 text-gray-700">
                 <span>Effective: {{ formatDateTime(alert.effective) }}</span> |
                 <span>Expires: {{ formatDateTime(alert.expires) }}</span>
@@ -13,9 +24,33 @@
 </template>
 
 <script setup>
-defineProps({
+import { ref, watch } from 'vue';
+
+const props = defineProps({
     alerts: Object,
 });
+
+const alertsWithToggle = ref([]);
+
+watch(() => props.alerts, (newAlerts) => {
+    if (newAlerts && newAlerts.alert) {
+        alertsWithToggle.value = newAlerts.alert.map(alert => ({
+            ...alert,
+            showFullDesc: false,
+            showFullInstruction: false,
+        }));
+    } else {
+        alertsWithToggle.value = [];
+    }
+}, { immediate: true });
+
+const truncateText = (text, maxLength = 150) => {
+    if (!text) return '';
+    if (text.length <= maxLength) {
+        return text;
+    }
+    return text.substring(0, maxLength) + '...';
+};
 
 const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return 'N/A';
