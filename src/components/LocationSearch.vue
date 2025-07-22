@@ -8,7 +8,7 @@
                         class="w-full border-none rounded-lg py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-2 focus:ring-blue-200"
                         :displayValue="(city) => city?.name"
                         @change="searchQuery = $event.target.value"
-                        placeholder="Search for a city..."
+                        :placeholder="props.selectedCity?.name || 'Search for a city...'"
                     />
                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -78,26 +78,53 @@ import {
 
 const emit = defineEmits(['city-selected', 'use-my-location']);
 
+const props = defineProps({
+    selectedCity: Object,
+});
+
 const searchQuery = ref('');
 const searchResults = ref([]);
 const metroManilaCities = ref([]);
-const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+const allPhilippineCities = ref([]);
 
 let searchTimeout = null;
 
 const fetchMetroManilaCities = async () => {
     try {
-        const response = await axios.get(`https://api.weatherapi.com/v1/search.json?key=${apiKey}&q=Philippines`);
-        metroManilaCities.value = response.data.filter(result =>result.country === 'Philippines');
+        const response = await axios.get(`https://psgc.gitlab.io/api/regions/130000000/cities-municipalities/`);
+        metroManilaCities.value = response.data.map(city => ({
+            id: city.code,
+            name: city.name,
+            region: 'Metro Manila',
+            country: 'Philippines',
+        }));
     } catch (error) {
         console.error('Error fetching Metro Manila cities:', error);
+    }
+};
+
+const fetchAllPhilippineCities = async () => {
+    try {
+        const response = await axios.get(`https://psgc.gitlab.io/api/cities-municipalities/`);
+        allPhilippineCities.value = response.data.map(city => ({
+            id: city.code,
+            name: city.name,
+            region: city.region,
+            country: 'Philippines',
+        }));
+    } catch (error) {
+        console.error('Error fetching all Philippine cities:', error);
     }
 };
 
 watchEffect(() => {
     if (!metroManilaCities.value.length) {
         fetchMetroManilaCities();
-    } else if (searchQuery.value === '') {
+    }
+    if (!allPhilippineCities.value.length) {
+        fetchAllPhilippineCities();
+    }
+    if (searchQuery.value === '') {
         searchResults.value = metroManilaCities.value;
     }
 });
@@ -117,13 +144,11 @@ const onSearch = async () => {
         clearTimeout(searchTimeout);
     }
 
-    searchTimeout = setTimeout(async () => {
-        try {
-            const response = await axios.get(`https://api.weatherapi.com/v1/search.json?key=${apiKey}&q=${searchQuery.value}`);
-            searchResults.value = response.data.filter(result => result.country === 'Philippines');
-        } catch (error) {
-            console.error('Error searching for city:', error);
-        }
+    searchTimeout = setTimeout(() => {
+        const filtered = allPhilippineCities.value.filter(city =>
+            city.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+        );
+        searchResults.value = filtered;
     }, 300);
 };
 
