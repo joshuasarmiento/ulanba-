@@ -44,47 +44,6 @@
             </div>
         </section>
 
-        <!-- LPA & Typhoon Advisory -->
-        <!-- <Dialog :open="isLpaAdvisoryOpen" @close="closeLpaAdvisory" class="relative z-50">
-            <div class="fixed inset-0 bg-black/30" aria-hidden="true" />
-
-            <div class="fixed inset-0 flex w-screen items-center justify-center p-4">
-                <DialogPanel
-                    class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow transition-all">
-                    <DialogTitle class="font-bold leading-6 mb-2 text-amber-800">LPA & Typhoon Advisory
-                    </DialogTitle>
-                    <DialogDescription class="text-sm text-gray-600 mb-4">
-                        <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
-                            <div class="font-semibold mb-2">Para sa pinakahuling update tungkol sa Low Pressure Area
-                                (LPA) o
-                                Bagyo, laging sumangguni sa opisyal na anunsyo ng PAGASA.</div>
-                            <div class="flex flex-col gap-1">
-                                <a href="https://www.pagasa.dost.gov.ph/weather/weather-advisory"
-                                    class="text-[#56A0EE] hover:underline font-semibold" target="_blank"
-                                    rel="noopener noreferrer">
-                                    Tingnan ang Latest PAGASA Weather Advisory
-                                </a>
-                                <a href="https://www.pagasa.dost.gov.ph/flood"
-                                    class="text-[#56A0EE] hover:underline font-semibold" target="_blank"
-                                    rel="noopener noreferrer">
-                                    PAGASA Flood Information
-                                </a>
-                            </div>
-                            <div class="mt-4">
-                                <h3 class="font-semibold mb-1">Mga Dapat Tandaan:</h3>
-                                <ul class="list-disc list-inside text-sm">
-                                    <li>Manatiling updated sa ulat-panahon mula sa PAGASA.</li>
-                                    <li>Ihanda ang inyong emergency go-bag.</li>
-                                    <li>Iwasan ang mga lugar na peligroso sa baha at landslide.</li>
-                                    <li>Maging alerto sa mga posibleng pagbabago ng panahon.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </DialogDescription>
-                </DialogPanel>
-            </div>
-        </Dialog> -->
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             <!-- Current Weather -->
@@ -428,10 +387,6 @@ const nextDayWeatherTip = computed(() => {
 
     return "Laging maging handa sa anumang pagbabago ng panahon.";
 });
-
-function closeLpaAdvisory() {
-    isLpaAdvisoryOpen.value = false
-}
 
 const getWindWarningBadge = (wind_kph) => {
     let label = "Normal";

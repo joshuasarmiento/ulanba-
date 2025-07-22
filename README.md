@@ -1,14 +1,17 @@
-# Panahon Ngayon
+# Ulan Ba Dyan?
 
-Panahon Ngayon is a simple weather application built with Vue 3, TypeScript, and Vite. It provides current weather conditions and a 3-day forecast for selected regions, provinces, and cities in the Philippines, along with weather advice and PAGASA advisories.
+Ulan Ba Dyan? is a simplified weather monitoring application built with Vue 3, TypeScript, and Vite. It helps communities stay informed, prepared, and safe by providing accurate weather forecasts and advisories for the Philippines.
 
 ## Features
 
-*   **Location Selection:** Choose a region, province, and city in the Philippines to get localized weather information.
-*   **Current Weather:** Displays current temperature, 'feels like' temperature, humidity, wind speed, and weather conditions.
-*   **3-Day Forecast:** Provides a forecast for the next three days, including high/low temperatures and chance of rain.
+*   **Intuitive Location Search:** Easily find any city in the Philippines using a single search input with autocomplete. Defaults to showing Metro Manila cities when empty.
+*   **"Use My Location" Feature:** Get instant weather updates for your current, precise location using the browser's Geolocation API.
+*   **Current Weather:** Displays real-time temperature, 'feels like' temperature, humidity, wind speed, and weather conditions.
+*   **3-Day Forecast:** Provides a detailed forecast for the next three days, including high/low temperatures and chance of rain, along with a random weather tip for the next day.
+*   **Hourly Forecast:** View hourly weather predictions for the selected city.
 *   **Weather Advice:** Offers practical advice based on current weather conditions (e.g., what to do during sunny or rainy weather).
-*   **PAGASA Advisories:** Includes links and information related to PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration) advisories for LPA, typhoons, and floods.
+*   **LPA & Typhoon Advisories:** Displays real-time weather alerts and advisories, including LPA and Typhoon updates, refreshed hourly.
+*   **PAGASA Synopsis:** Includes official PAGASA weather synopsis and links to their advisories.
 *   **Dynamic Weather Icons:** Uses animated weather icons from Makin-Things/weather-icons.
 
 ## Project Setup
