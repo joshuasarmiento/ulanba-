@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, onUnmounted } from 'vue'
 import axios from 'axios'
 import AppHeader from './AppHeader.vue'
 import AppFooter from './AppFooter.vue'
 import LocationSelector from './LocationSelector.vue'
 import WeatherDisplay from './WeatherDisplay.vue'
+import AdvisoryDisplay from './AdvisoryDisplay.vue'
 
 const regions = ref([])
 const provinces = ref([])
@@ -12,7 +13,7 @@ const cities = ref([])
 
 const selectedRegionCode = ref(null)
 const selectedProvinceCode = ref(null)
-const selectedCity = ref(null)
+const selectedCity = ref(JSON.parse(localStorage.getItem('lastSelectedCity') || 'null'))
 
 const favorites = ref(JSON.parse(localStorage.getItem('weatherFavorites') || '[]'))
 
@@ -35,6 +36,8 @@ const removeFavorite = (city) => {
 const weatherData = ref(null)
 const loading = ref(false)
 const error = ref(null)
+const alerts = ref(null)
+let advisoryInterval = null
 
 // Replace with your API key
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY
@@ -197,6 +200,7 @@ const fetchWeather = async () => {
             `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${selectedCity.value.name}&days=3&aqi=no&alerts=yes`
         )
         weatherData.value = weatherResponse.data
+        alerts.value = weatherResponse.data.alerts
     } catch (err) {
         error.value = 'Error: Hindi makuha ang weather data. Please try again later.'
         console.error(err)
@@ -236,6 +240,9 @@ watch(selectedProvinceCode, (newProvinceCode) => {
 watch(selectedCity, (newCity) => {
     if (newCity) {
         fetchWeather()
+        localStorage.setItem('lastSelectedCity', JSON.stringify(newCity));
+    } else {
+        localStorage.removeItem('lastSelectedCity');
     }
 })
 
@@ -279,7 +286,18 @@ const formatTime = (dateTimeString) => {
 
 onMounted(async () => {
     await fetchRegions()
-    selectedRegionCode.value = NCR_CODE
+    const lastSelected = JSON.parse(localStorage.getItem('lastSelectedCity') || 'null');
+    if (lastSelected) {
+        selectedCity.value = lastSelected;
+    } else {
+        selectedRegionCode.value = NCR_CODE
+    }
+
+    advisoryInterval = setInterval(fetchWeather, 3600000) // 1 hour
+})
+
+onUnmounted(() => {
+    clearInterval(advisoryInterval)
 })
 </script>
 
@@ -294,6 +312,8 @@ onMounted(async () => {
                 @update:selectedCity="selectedCity = $event"
                 @add-favorite="addFavorite"
                 @remove-favorite="removeFavorite" />
+
+            <AdvisoryDisplay :alerts="alerts" />
 
             <WeatherDisplay :weatherData="weatherData" :loading="loading" :error="error" :selectedCity="selectedCity"
                 :selectedRegionCode="selectedRegionCode" :getWeatherIcon="getWeatherIcon" :formatDate="formatDate"

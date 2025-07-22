@@ -45,7 +45,7 @@
         </section>
 
         <!-- LPA & Typhoon Advisory -->
-        <Dialog :open="isLpaAdvisoryOpen" @close="closeLpaAdvisory" class="relative z-50">
+        <!-- <Dialog :open="isLpaAdvisoryOpen" @close="closeLpaAdvisory" class="relative z-50">
             <div class="fixed inset-0 bg-black/30" aria-hidden="true" />
 
             <div class="fixed inset-0 flex w-screen items-center justify-center p-4">
@@ -81,13 +81,9 @@
                             </div>
                         </div>
                     </DialogDescription>
-
-                    <!-- <button @click="closeLpaAdvisory" class="mt-4 px-4 py-2 bg-blue-500 text-white  hover:bg-[#56A0EE]">
-                        Got it!
-                    </button> -->
                 </DialogPanel>
             </div>
-        </Dialog>
+        </Dialog> -->
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -95,13 +91,13 @@
             <div class="glow-box lg:col-span-1 bg-white p-6 rounded-xl shadow flex flex-col items-center text-center"
                 data-glow>
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Panahon Ngayon sa <br> {{ selectedCity.name }}</h2>
-                <p class="text-5xl font-extrabold text-gray-900">{{ weatherData.current.temp_c }}°C</p>
+                <p class="text-4xl font-extrabold text-gray-900">{{ weatherData.current.temp_c }}°C</p>
                 <p class="text-gray-600 mb-2">Feels like: {{ weatherData.current.feelslike_c }}°C</p>
                 <div class="flex items-center justify-center">
                     <img :src="getWeatherIcon(weatherData.current.condition.text, weatherData.current.is_day)"
                         alt="Weather Icon" class="w-32 h-auto " />
                     <div class="relative text-lg capitalize font-semibold text-gray-700">
-                        <p> {{ weatherData.current.condition.text }}</p>
+                        <p class="text-sm"> {{ weatherData.current.condition.text }}</p>
                         <span :class="getWindWarningBadge(weatherData.current.wind_kph).color"
                             class="absolute -top-6 right-4 px-2 py-1 rounded-full text-[0.7rem] font-semibold flex items-center">
                             <span :class="getWindWarningBadge(weatherData.current.wind_kph).dotColor"
@@ -111,12 +107,12 @@
                                 <span class="relative inline-flex rounded-full h-2 w-2"
                                     :class="getWindWarningBadge(weatherData.current.wind_kph).dotColor"></span>
                             </span>
-                            <span class="ml-1">{{ getWindWarningBadge(weatherData.current.wind_kph).label }}</span>
+                            <span class="ml-1 flex">{{ getWindWarningBadge(weatherData.current.wind_kph).label }}</span>
                         </span>
                     </div>
                 </div>
-                <div class="flex justify-around w-full mt-4 text-sm text-gray-600">
-                    <div class="flex items-center text-xs">
+                <div class="flex justify-around w-full mt-4 text-sm text-gray-500">
+                    <div class="flex items-center text-sm">
                         <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -124,7 +120,7 @@
                         </svg>
                         <span>{{ weatherData.current.humidity }}% Humidity</span>
                     </div>
-                    <div class="flex items-center text-xs">
+                    <div class="flex items-center text-sm">
                         <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -138,8 +134,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-around w-full mt-4 text-sm text-gray-600">
-                    <div class="flex items-center text-xs">
+                <div class="flex justify-around w-full mt-4 text-sm text-gray-500">
+                    <div class="flex items-center text-sm">
                         <svg class="w-6 h-6 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -148,7 +144,7 @@
                         </svg>
                         <span>Sunrise: {{ weatherData.forecast.forecastday[0].astro.sunrise }}</span>
                     </div>
-                    <div class="flex items-center text-xs">
+                    <div class="flex items-center text-sm">
                         <svg class="w-6 h-6 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -162,13 +158,14 @@
 
             <!-- 3-Day Forecast -->
             <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">3-Day Forecast</h2>
+                <h2 class="text-xl font-bold text-gray-800">3-Day Forecast</h2>
+                <p class="text-sm text-gray-500 mb-4">Weather forecast for the next three days</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div v-for="day in weatherData.forecast.forecastday" :key="day.date"
                         class="text-center p-4 bg-gray-50 shadow rounded-lg">
                         <h3 class="font-bold text-gray-800">{{ formatDate(day.date) }}</h3>
                         <img :src="getWeatherIcon(day.day.condition.text, true)" alt="Weather Icon"
-                            class="w-16 my-2 h-auto mx-auto" />
+                            class="w-24 my-2 h-auto mx-auto" />
                         <p class="font-semibold text-lg">{{ day.day.maxtemp_c }}° / {{ day.day.mintemp_c }}°</p>
                         <p class="text-sm text-gray-600 capitalize">{{ day.day.condition.text }}</p>
                         <div class="flex items-center justify-center mt-2 text-sm text-[#56A0EE]">
@@ -182,11 +179,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="mt-4 text-start text-sm bg-gray-50 p-3 text-gray-600 shadow rounded-lg">
+                    <p><span class="font-semibold">Tip for Tomorrow:</span> {{ nextDayWeatherTip }}</p>
+                </div>
             </div>
 
             <!-- Hourly Forecast with Tabs -->
             <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow mt-2">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Hourly Forecast</h2>
+                <h2 class="text-xl font-bold text-gray-800">Hourly Forecast</h2>
+                <p class="text-sm text-gray-500 mb-4">Weather forecast for the next 24 hours</p>
                 <TabGroup>
                     <TabList class="flex space-x-1 rounded-xl bg-gray-300/20 p-1 ">
                         <Tab v-for="day in weatherData.forecast.forecastday" :key="day.date" as="template"
@@ -372,7 +373,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import {
     Dialog,
     DialogPanel,
@@ -401,7 +402,33 @@ const props = defineProps({
     formatTime: Function,
 })
 
-const isLpaAdvisoryOpen = ref(true)
+const nextDayWeatherTip = computed(() => {
+    if (!props.weatherData || !props.weatherData.forecast || !props.weatherData.forecast.forecastday[1]) {
+        return "Keep an eye on the forecast!";
+    }
+
+    const tomorrow = props.weatherData.forecast.forecastday[1];
+    const condition = tomorrow.day.condition.text.toLowerCase();
+    const tips = [];
+
+    if (condition.includes('sunny') || condition.includes('clear')) {
+        tips.push("Bukas ay maganda ang panahon! Magsuot ng magaan na damit at mag-enjoy sa labas.");
+        tips.push("Huwag kalimutan ang sunscreen para protektahan ang iyong balat.");
+    } else if (condition.includes('rain') || condition.includes('drizzle') || condition.includes('shower')) {
+        tips.push("May posibilidad ng pag-ulan bukas. Magdala ng payong o kapote.");
+        tips.push("Mag-ingat sa pagmamaneho dahil maaaring madulas ang kalsada.");
+    } else if (condition.includes('cloudy') || condition.includes('overcast')) {
+        tips.push("Maulap ang panahon bukas. Magandang pagkakataon para sa mga outdoor activities.");
+    } else if (condition.includes('thunder') || condition.includes('thundery')) {
+        tips.push("May babala ng thunderstorms bukas. Manatili sa loob ng bahay kung posible.");
+    }
+
+    if (tips.length > 0) {
+        return tips[Math.floor(Math.random() * tips.length)];
+    }
+
+    return "Laging maging handa sa anumang pagbabago ng panahon.";
+});
 
 function closeLpaAdvisory() {
     isLpaAdvisoryOpen.value = false
