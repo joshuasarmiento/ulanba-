@@ -12,7 +12,7 @@
     </div>
 
     <!-- Searching for City Selection -->
-    <div v-if="!weatherData && !loading && !error && selectedRegionCode && !selectedCity"
+    <div v-if="!weatherData && !loading && !error && !selectedCity"
         class="text-center h-[60vh] p-10 flex flex-col items-center justify-center">
         <img src="https://raw.githubusercontent.com/Makin-Things/weather-icons/master/animated/dust.svg"
             alt="Searching Icon" class="w-24 h-auto mb-4" />
@@ -394,7 +394,6 @@ const props = defineProps({
     loading: Boolean,
     error: String,
     selectedCity: Object,
-    selectedRegionCode: String, // Added for the "Searching for cities..." message
     getWeatherIcon: Function,
     formatDate: Function,
     formatDateTime: Function,

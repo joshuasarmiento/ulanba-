@@ -175,24 +175,53 @@ const fetchCities = async (provinceCode) => {
     }
 }
 
-const fetchWeatherByIp = async () => {
-    loading.value = true
-    error.value = null
-    try {
-        const response = await axios.get(`https://api.weatherapi.com/v1/ip.json?key=${apiKey}&q=auto:ip`);
-        const locationData = {
-            name: response.data.city,
-            region: response.data.region,
-            country: response.data.country_name
-        };
-        selectedCity.value = locationData;
-    } catch (err) {
-        error.value = 'Error: Could not fetch weather for your location.'
-        console.error(err)
-    } finally {
-        loading.value = false
+const fetchWeatherByIp = () => {
+    loading.value = true;
+    error.value = null;
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                try {
+                    const geoResponse = await axios.get(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}`);
+                    const locationData = {
+                        name: geoResponse.data.location.name,
+                        region: geoResponse.data.location.region,
+                        country: geoResponse.data.location.country
+                    };
+                    selectedCity.value = locationData;
+                    fetchWeather();
+                } catch (apiError) {
+                    error.value = 'Error fetching location details from WeatherAPI.';
+                    console.error('WeatherAPI error:', apiError);
+                    loading.value = false;
+                }
+            },
+            (geoError) => {
+                let errorMessage = 'Error getting your location.';
+                switch (geoError.code) {
+                    case geoError.PERMISSION_DENIED:
+                        errorMessage = 'You denied access to your location. Please enable location services for this site.';
+                        break;
+                    case geoError.POSITION_UNAVAILABLE:
+                        errorMessage = 'Your location is currently unavailable. Please check your internet connection or try again.';
+                        break;
+                    case geoError.TIMEOUT:
+                        errorMessage = 'Timed out trying to get your location. Please try again.';
+                        break;
+                }
+                error.value = errorMessage;
+                console.error('Geolocation error:', geoError);
+                loading.value = false;
+            }
+        );
+    } else {
+        error.value = 'Geolocation is not supported by your browser.';
+        loading.value = false;
     }
-}
+};
 
 const fetchWeather = async () => {
     if (!selectedCity.value) return
