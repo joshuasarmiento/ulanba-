@@ -3,16 +3,10 @@ import { ref, onMounted, watch, onUnmounted } from 'vue'
 import axios from 'axios'
 import AppHeader from './AppHeader.vue'
 import AppFooter from './AppFooter.vue'
-import LocationSelector from './LocationSelector.vue'
+import LocationSearch from './LocationSearch.vue'
 import WeatherDisplay from './WeatherDisplay.vue'
 import AdvisoryDisplay from './AdvisoryDisplay.vue'
 
-const regions = ref([])
-const provinces = ref([])
-const cities = ref([])
-
-const selectedRegionCode = ref(null)
-const selectedProvinceCode = ref(null)
 const selectedCity = ref(JSON.parse(localStorage.getItem('lastSelectedCity') || 'null'))
 
 const favorites = ref(JSON.parse(localStorage.getItem('weatherFavorites') || '[]'))
@@ -181,13 +175,22 @@ const fetchCities = async (provinceCode) => {
     }
 }
 
-const fetchNcrCities = async () => {
+const fetchWeatherByIp = async () => {
+    loading.value = true
+    error.value = null
     try {
-        const response = await axios.get(`https://psgc.gitlab.io/api/regions/${NCR_CODE}/cities-municipalities/`)
-        cities.value = response.data
+        const response = await axios.get(`https://api.weatherapi.com/v1/ip.json?key=${apiKey}&q=auto:ip`);
+        const locationData = {
+            name: response.data.city,
+            region: response.data.region,
+            country: response.data.country_name
+        };
+        selectedCity.value = locationData;
     } catch (err) {
-        error.value = 'Error: Hindi ma-load ang mga lungsod para sa NCR.'
+        error.value = 'Error: Could not fetch weather for your location.'
         console.error(err)
+    } finally {
+        loading.value = false
     }
 }
 
@@ -209,49 +212,12 @@ const fetchWeather = async () => {
     }
 }
 
-watch(selectedRegionCode, (newRegionCode) => {
-    provinces.value = []
-    cities.value = []
-    selectedProvinceCode.value = null
-    selectedCity.value = null
-    weatherData.value = null
-
-    if (newRegionCode) {
-        if (newRegionCode === NCR_CODE) {
-            provinces.value = [{ name: 'Metro Manila', code: METRO_MANILA_PSEUDO_CODE }]
-            selectedProvinceCode.value = METRO_MANILA_PSEUDO_CODE
-            fetchNcrCities()
-        } else {
-            fetchProvinces(newRegionCode)
-        }
-    }
-})
-
-watch(selectedProvinceCode, (newProvinceCode) => {
-    cities.value = []
-    selectedCity.value = null
-    weatherData.value = null
-
-    if (newProvinceCode && newProvinceCode !== METRO_MANILA_PSEUDO_CODE) {
-        fetchCities(newProvinceCode)
-    }
-})
-
 watch(selectedCity, (newCity) => {
     if (newCity) {
         fetchWeather()
         localStorage.setItem('lastSelectedCity', JSON.stringify(newCity));
     } else {
         localStorage.removeItem('lastSelectedCity');
-    }
-})
-
-watch(cities, (newCities) => {
-    if (selectedRegionCode.value === NCR_CODE && newCities.length > 0 && !selectedCity.value) {
-        const manila = newCities.find(city => city.name === 'City of Manila')
-        if (manila) {
-            selectedCity.value = manila
-        }
     }
 })
 
@@ -285,12 +251,11 @@ const formatTime = (dateTimeString) => {
 }
 
 onMounted(async () => {
-    await fetchRegions()
     const lastSelected = JSON.parse(localStorage.getItem('lastSelectedCity') || 'null');
     if (lastSelected) {
         selectedCity.value = lastSelected;
     } else {
-        selectedRegionCode.value = NCR_CODE
+        fetchWeatherByIp();
     }
 
     advisoryInterval = setInterval(fetchWeather, 3600000) // 1 hour
@@ -305,13 +270,7 @@ onUnmounted(() => {
     <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 font-sans">
         <main class="flex-grow p-4 max-w-6xl mx-auto w-full">
             <AppHeader :weatherData="weatherData" :getWeatherIcon="getWeatherIcon" />
-            <LocationSelector :regions="regions" :provinces="provinces" :cities="cities"
-                :selectedRegionCode="selectedRegionCode" :selectedProvinceCode="selectedProvinceCode"
-                :selectedCity="selectedCity" :favorites="favorites" @update:selectedRegionCode="selectedRegionCode = $event"
-                @update:selectedProvinceCode="selectedProvinceCode = $event"
-                @update:selectedCity="selectedCity = $event"
-                @add-favorite="addFavorite"
-                @remove-favorite="removeFavorite" />
+            <LocationSearch @city-selected="selectedCity = $event" @use-my-location="fetchWeatherByIp" />
 
             <AdvisoryDisplay :alerts="alerts" />
 
