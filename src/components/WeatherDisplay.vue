@@ -57,7 +57,7 @@
                     <div class="relative text-lg capitalize font-semibold text-gray-700">
                         <p class="text-sm"> {{ weatherData.current.condition.text }}</p>
                         <span :class="getWindWarningBadge(weatherData.current.wind_kph).color"
-                            class="absolute -top-6 right-4 px-2 py-1 rounded-full text-[0.7rem] font-semibold flex items-center">
+                            class="absolute -top-6 right-0 px-2 py-0.5 rounded-full text-[0.6rem] font-semibold flex items-center">
                             <span :class="getWindWarningBadge(weatherData.current.wind_kph).dotColor"
                                 class="relative flex h-2 w-2">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
@@ -69,7 +69,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-y-2 w-full mt-4 text-sm text-gray-500">
+                <div class="grid grid-cols-2 gap-y-2 w-full mt-4 text-xs text-gray-500">
                     <div class="flex items-center">
                         <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -79,7 +79,7 @@
                         <span>{{ weatherData.current.humidity }}% Humidity</span>
                     </div>
                     <div class="flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
@@ -90,7 +90,7 @@
                         <span>{{ weatherData.current.wind_kph }} kph Wind </span>
                     </div>
                     <div class="flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 3v1m0 16v1m9-9h1M3 12H2m15.325-7.757l.707-.707M3.929 19.071l.707-.707m0-14.142l-.707-.707M19.071 19.071l-.707-.707M12 18a6 6 0 100-12 6 6 0 000 12z">
@@ -99,7 +99,7 @@
                         <span>Sunrise: {{ weatherData.forecast.forecastday[0].astro.sunrise }}</span>
                     </div>
                     <div class="flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        <svg class="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9 9 0 008.354-5.646z">
@@ -133,8 +133,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 text-start text-sm bg-gray-50 p-3 text-gray-600 shadow rounded-lg">
-                    <p><span class="font-semibold">Tip for Tomorrow:</span> {{ nextDayWeatherTip }}</p>
+                <div class="mt-4 text-start text-xs text-gray-600">
+                    <p>{{ nextDayWeatherTip }}</p>
                 </div>
             </div>
 

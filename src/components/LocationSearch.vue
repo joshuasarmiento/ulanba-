@@ -6,10 +6,8 @@
                     class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
                     <ComboboxInput
                         class="w-full border-none rounded-lg py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-2 focus:ring-blue-200"
-                        :displayValue="(city) => city?.name"
-                        @change="searchQuery = $event.target.value"
-                        :placeholder="props.selectedCity?.name || 'Search for a city...'"
-                    />
+                        :displayValue="(city) => city?.name" @change="searchQuery = $event.target.value"
+                        :placeholder="props.selectedCity?.name || 'Search for a city...'" />
                     <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                             class="h-5 w-5 text-gray-400" aria-hidden="true">
@@ -54,11 +52,16 @@
                     </ComboboxOptions>
                 </TransitionRoot>
             </Combobox>
-            <button
-                @click="emit('use-my-location')"
-                class="px-2 py-1.5 cursor-pointer text-white bg-[#CD9E73] md:bg-gradient-to-r md:from-[#CD9E73] md:to-[#56A0EE] rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-200"
-            >
-                Use My Location
+            <button @click="emit('use-my-location')"
+                class="px-2 py-1.5 cursor-pointer text-white bg-[#CD9E73] md:bg-gradient-to-r md:from-[#CD9E73] md:to-[#56A0EE] rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-200">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
             </button>
         </div>
     </div>
@@ -68,12 +71,12 @@
 import { ref, watch, watchEffect } from 'vue';
 import axios from 'axios';
 import {
-  Combobox,
-  ComboboxInput,
-  ComboboxButton,
-  ComboboxOptions,
-  ComboboxOption,
-  TransitionRoot,
+    Combobox,
+    ComboboxInput,
+    ComboboxButton,
+    ComboboxOptions,
+    ComboboxOption,
+    TransitionRoot,
 } from '@headlessui/vue'
 
 const emit = defineEmits(['city-selected', 'use-my-location']);

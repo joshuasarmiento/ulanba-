@@ -297,7 +297,7 @@ onUnmounted(() => {
 
 <template>
     <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 font-sans">
-        <main class="flex-grow p-4 max-w-6xl mx-auto w-full">
+        <main class="flex-grow p-4 max-w-5xl mx-auto w-full">
             <AppHeader :weatherData="weatherData" :getWeatherIcon="getWeatherIcon" />
             <LocationSearch :selectedCity="selectedCity" @city-selected="selectedCity = $event" @use-my-location="fetchWeatherByIp" />
 
