@@ -145,6 +145,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Hourly Forecast with Tabs -->
+            <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-sm mt-2">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Hourly Forecast</h2>
+                <TabGroup>
+                    <TabList class="flex space-x-1 rounded-xl bg-gray-300/20 p-1 ">
+                        <Tab v-for="day in weatherData.forecast.forecastday" :key="day.date"
+                            as="template" v-slot="{ selected }">
+                            <button
+                                :class="[
+                                    'w-full cursor-pointer rounded-lg py-2.5 text-sm font-medium leading-5',
+                                    'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                                    selected
+                                        ? 'bg-white text-blue-700 shadow'
+                                        : 'text-blue-400 hover:bg-white/[0.12] hover:text-blue',
+                                ]"
+                            >
+                                {{ formatDate(day.date) }}
+                            </button>
+                        </Tab>
+                    </TabList>
+
+                    <TabPanels class="mt-2">
+                        <TabPanel v-for="day in weatherData.forecast.forecastday" :key="day.date"
+                            :class="[
+                                'rounded-xl bg-white p-3',
+                                'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                            ]"
+                        >
+                            <div class="overflow-x-auto">
+                                <div class="flex space-x-4 pb-2">
+                                    <div v-for="hour in day.hour" :key="hour.time_epoch"
+                                        class="text-center p-3 bg-gray-50 shadow-sm rounded-lg w-24 flex-shrink-0">
+                                        <p class="text-sm text-gray-600">{{ formatTime(hour.time) }}</p>
+                                        <img :src="getWeatherIcon(hour.condition.text, hour.is_day)" alt="Weather Icon"
+                                            class="w-12 h-auto mx-auto my-1" />
+                                        <p class="font-semibold text-md">{{ hour.temp_c }}°C</p>
+                                        <p class="text-xs text-blue-600">{{ hour.chance_of_rain }}% Rain</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </TabPanel>
+                    </TabPanels>
+                </TabGroup>
+            </div>
         </div>
 
         <!-- PAGASA Synopsis -->
@@ -191,6 +236,11 @@ import {
     DialogPanel,
     DialogTitle,
     DialogDescription,
+    TabGroup,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
 } from '@headlessui/vue'
 
 const props = defineProps({
@@ -203,6 +253,7 @@ const props = defineProps({
     formatDate: Function,
     formatDateTime: Function,
     getWeatherAdvice: Function,
+    formatTime: Function,
 })
 
 const isLpaAdvisoryOpen = ref(true)

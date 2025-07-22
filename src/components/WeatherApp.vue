@@ -250,6 +250,15 @@ const formatDateTime = (dateTimeString) => {
     })
 }
 
+const formatTime = (dateTimeString) => {
+    if (!dateTimeString) return 'N/A';
+    return new Date(dateTimeString).toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    })
+}
+
 onMounted(async () => {
     await fetchRegions()
     selectedRegionCode.value = NCR_CODE
@@ -283,6 +292,7 @@ onMounted(async () => {
                 :formatDate="formatDate"
                 :formatDateTime="formatDateTime"
                 :getWeatherAdvice="getWeatherAdvice"
+                :formatTime="formatTime"
             />
         </main>
 

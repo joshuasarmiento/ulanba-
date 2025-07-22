@@ -3,7 +3,7 @@
         <img src="../assets/haze_animated.svg" class="h-12 w-12" alt="Logo" />
         <h1
             class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-500 to-blue-500 bg-clip-text text-transparent">
-            San ka?</h1>
+            Ulan Ba?</h1>
     </header>
 </template>
 
