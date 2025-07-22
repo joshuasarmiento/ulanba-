@@ -267,7 +267,10 @@ onMounted(async () => {
 
 <template>
     <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 font-sans">
-        <AppHeader />
+        <AppHeader
+            :weatherData="weatherData"
+            :getWeatherIcon="getWeatherIcon"
+        />
 
         <main class="flex-grow p-4 max-w-6xl mx-auto w-full">
             <LocationSelector

@@ -5,7 +5,7 @@
             <Listbox :modelValue="selectedRegionCode" @update:modelValue="emit('update:selectedRegionCode', $event)">
                 <div class="relative mt-1">
                     <ListboxButton
-                        class="relative w-full cursor-default rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
+                        class="relative w-full cursor-default rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
                         <span class="block truncate">{{ selectedRegionCode ? regions.find(r => r.code === selectedRegionCode)?.name : 'Rehiyon' }}</span>
                         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -18,7 +18,7 @@
                     </ListboxButton>
                     <TransitionRoot leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <ListboxOptions
-                            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-md ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow ring-1 ring-black/5 focus:outline-none sm:text-sm">
                             <ListboxOption v-slot="{ active, selected }" v-for="region in regions" :key="region.code"
                                 :value="region.code" as="template">
                                 <li :class="[
@@ -48,7 +48,7 @@
             <Listbox :modelValue="selectedProvinceCode" :disabled="!selectedRegionCode" @update:modelValue="emit('update:selectedProvinceCode', $event)">
                 <div class="relative mt-1">
                     <ListboxButton
-                        class="relative w-full cursor-default rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
+                        class="relative w-full cursor-default rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
                         <span class="block truncate">{{ selectedProvinceCode ? provinces.find(p => p.code === selectedProvinceCode)?.name : 'Probinsya' }}</span>
                         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -61,7 +61,7 @@
                     </ListboxButton>
                     <TransitionRoot leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <ListboxOptions
-                            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-md ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow ring-1 ring-black/5 focus:outline-none sm:text-sm">
                             <ListboxOption v-slot="{ active, selected }" v-for="province in provinces"
                                 :key="province.code" :value="province.code" as="template">
                                 <li :class="[
@@ -91,7 +91,7 @@
             <Listbox :modelValue="selectedCity" :disabled="!selectedProvinceCode" @update:modelValue="emit('update:selectedCity', $event)">
                 <div class="relative mt-1">
                     <ListboxButton
-                        class="relative w-full cursor-default rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
+                        class="relative w-full cursor-default rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
                         <span class="block truncate">{{ selectedCity ? selectedCity.name : 'Lungsod / Bayan' }}</span>
                         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -104,7 +104,7 @@
                     </ListboxButton>
                     <TransitionRoot leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <ListboxOptions
-                            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-md ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow ring-1 ring-black/5 focus:outline-none sm:text-sm">
                             <ListboxOption v-slot="{ active, selected }" v-for="city in cities" :key="city.code"
                                 :value="city" as="template">
                                 <li :class="[
