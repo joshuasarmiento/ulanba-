@@ -191,7 +191,7 @@
                 <h2 class="text-2xl font-bold text-gray-600 mb-4">PAGASA <span class="md:bg-gradient-to-r md:from-[#CD9E73] md:to-[#56A0EE] md:bg-clip-text md:text-transparent">Daily Weather Forecast</span></h2>
                 <p v-if="pagasaData.issued_at" class="mb-2 px-2 py-0 rounded-full bg-gray-200 font-semibold w-fit">
                     {{ pagasaData.issued_at }}</p>
-                <p v-if="pagasaData.synopsis" class="mb-4"><span class="font-bold">Synopsis:</span> {{
+                <p v-if="pagasaData.synopsis" class="mb-4">{{
                     pagasaData.synopsis
                     }}</p>
 
