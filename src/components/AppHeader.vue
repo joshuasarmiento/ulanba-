@@ -12,10 +12,3 @@
 <script setup>
 // No script needed for a static header
 </script>
-
-<style scoped>
-/* Add any specific styles for the header here if needed */
-.gradient-text {
-    -webkit-box-decoration-break: clone;
-} 
-</style>
