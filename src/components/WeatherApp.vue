@@ -31,6 +31,7 @@ const weatherData = ref(null)
 const loading = ref(false)
 const error = ref(null)
 const alerts = ref(null)
+const pagasaData = ref(null)
 let advisoryInterval = null
 
 // Replace with your API key
@@ -193,6 +194,7 @@ const fetchWeatherByIp = () => {
                     };
                     selectedCity.value = locationData;
                     fetchWeather();
+                    // fetchPagasaData();
                 } catch (apiError) {
                     error.value = 'Error fetching location details from WeatherAPI.';
                     console.error('WeatherAPI error:', apiError);
@@ -223,6 +225,36 @@ const fetchWeatherByIp = () => {
     }
 };
 
+const fetchPagasaData = async () => {
+    loading.value = true
+    error.value = null
+    try {
+        const response = await axios.get('https://pagasa-forecast-api.vercel.app/api/pagasa-forecast')
+        pagasaData.value = response.data
+    } catch (err) {
+        // More detailed error logging
+        // if (err.response) {
+        //     // The request was made and the server responded with a status code
+        //     // that falls out of the range of 2xx
+        //     error.value = `Error fetching PAGASA data: Server responded with status ${err.response.status} - ${err.response.data.message || err.response.statusText}`;
+        //     console.error('PAGASA API Error Response:', err.response.data);
+        // } else if (err.request) {
+        //     // The request was made but no response was received
+        //     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        //     // http.ClientRequest in node.js
+        //     error.value = 'Error fetching PAGASA data: No response received from server. Check if the API is running and accessible.';
+        //     console.error('PAGASA API Request Error:', err.request);
+        // } else {
+        //     // Something happened in setting up the request that triggered an Error
+        //     error.value = `Error fetching PAGASA data: ${err.message}`;
+        //     console.error('PAGASA API Axios Error:', err.message);
+        // }
+        console.error("PAGASA API Error Response:", err.response.data); // Log the full error object for detailed debugging
+    } finally {
+        loading.value = false
+    }
+}
+
 const fetchWeather = async () => {
     if (!selectedCity.value) return
     loading.value = true
@@ -244,6 +276,7 @@ const fetchWeather = async () => {
 watch(selectedCity, (newCity) => {
     if (newCity) {
         fetchWeather()
+        fetchPagasaData()
         localStorage.setItem('lastSelectedCity', JSON.stringify(newCity));
     } else {
         localStorage.removeItem('lastSelectedCity');
@@ -283,11 +316,15 @@ onMounted(async () => {
     const lastSelected = JSON.parse(localStorage.getItem('lastSelectedCity') || 'null');
     if (lastSelected) {
         selectedCity.value = lastSelected;
+        fetchPagasaData();
     } else {
         fetchWeatherByIp();
     }
 
-    advisoryInterval = setInterval(fetchWeather, 3600000) // 1 hour
+    advisoryInterval = setInterval(() => {
+        fetchWeather();
+        fetchPagasaData();
+    }, 3600000) // 1 hour
 })
 
 onUnmounted(() => {
@@ -305,7 +342,7 @@ onUnmounted(() => {
 
             <WeatherDisplay :weatherData="weatherData" :loading="loading" :error="error" :selectedCity="selectedCity"
                 :selectedRegionCode="selectedRegionCode" :getWeatherIcon="getWeatherIcon" :formatDate="formatDate"
-                :formatDateTime="formatDateTime" :getWeatherAdvice="getWeatherAdvice" :formatTime="formatTime" />
+                :formatDateTime="formatDateTime" :formatTime="formatTime" :pagasaData="pagasaData" />
         </main>
 
         <AppFooter />

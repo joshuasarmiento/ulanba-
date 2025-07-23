@@ -6,7 +6,6 @@
                 class="gradient-text text-4xl py-2 text-[#CD9E73] md:text-[2rem] font-bold md:bg-gradient-to-r md:from-[#CD9E73] md:to-[#56A0EE] md:bg-clip-text md:text-transparent">
                 Ulan Ba Dyan?</h1>
         </div>
-        <p class="text-sm text-gray-600 -mt-1">Weather, simplified. Life, prepared.</p>
     </header>
 </template>
 

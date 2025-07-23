@@ -22,7 +22,8 @@
     <!-- Main Weather Data -->
     <div v-if="weatherData && !loading">
         <!-- Weather Alerts -->
-        <section v-if="weatherData.alerts && weatherData.alerts.alert.length" class="mb-8 p-4 bg-white rounded-xl shadow">
+        <section v-if="weatherData.alerts && weatherData.alerts.alert.length"
+            class="mb-8 p-4 bg-white rounded-xl shadow">
             <h2 class="text-2xl font-bold mb-4 text-red-600">Weather Alerts</h2>
             <div v-for="(alert, index) in weatherData.alerts.alert" :key="index"
                 class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow mb-4 space-y-2">
@@ -47,8 +48,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             <!-- Current Weather -->
-            <div class="glow-box lg:col-span-1 bg-white p-8 rounded-xl shadow flex flex-col items-center text-center" data-glow>
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Panahon Ngayon sa <br> {{ selectedCity.name }}</h2>
+            <div class="glow-box lg:col-span-1 bg-white p-8 rounded-xl shadow flex flex-col items-center text-center"
+                data-glow>
+                <h2 class="text-xl font-bold text-gray-600 mb-4">Panahon Ngayon sa <br> {{ selectedCity.name }}</h2>
                 <p class="text-6xl font-extrabold text-gray-900">{{ weatherData.current.temp_c }}°C</p>
                 <p class="text-gray-600 mb-2">Feels like: {{ weatherData.current.feelslike_c }}°C</p>
                 <div class="flex items-center justify-center">
@@ -112,16 +114,16 @@
 
             <!-- 3-Day Forecast -->
             <div class="lg:col-span-2 bg-white p-8 rounded-xl shadow">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">3-Day Forecast</h2>
+                <h2 class="text-2xl font-bold text-gray-600 mb-4">3-Day Forecast</h2>
                 <p class="text-sm text-gray-500 mb-4">Weather forecast for the next three days</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div v-for="day in weatherData.forecast.forecastday" :key="day.date"
                         class="text-center p-4 bg-gray-50 shadow rounded-lg">
-                        <h3 class="font-bold text-gray-800">{{ formatDate(day.date) }}</h3>
+                        <h3 class="font-bold text-gray-600">{{ formatDate(day.date) }}</h3>
                         <img :src="getWeatherIcon(day.day.condition.text, true)" alt="Weather Icon"
                             class="w-24 my-2 h-auto mx-auto" />
                         <p class="font-semibold text-lg">{{ day.day.maxtemp_c }}° / {{ day.day.mintemp_c }}°</p>
-                        
+
                         <div class="flex items-center justify-center mt-2 text-sm text-[#56A0EE]">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -140,7 +142,7 @@
 
             <!-- Hourly Forecast with Tabs -->
             <div class="lg:col-span-3 bg-white p-8 rounded-xl shadow mt-4">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Hourly Forecast</h2>
+                <h2 class="text-2xl font-bold text-gray-600 mb-4">Hourly Forecast</h2>
                 <p class="text-sm text-gray-500 mb-4">Weather forecast for the next 24 hours</p>
                 <TabGroup>
                     <TabList class="flex space-x-1 rounded-xl bg-gray-300/20 p-1 ">
@@ -181,152 +183,163 @@
             </div>
         </div>
 
-        <!-- PAGASA Synopsis -->
-        <section class="mt-8">
-            <div class="bg-white p-6 shadow rounded-xl text-sm text-gray-600">
-                <h2 class="font-bold text-gray-800 mb-3">Weather Synopsis (PAGASA)</h2>
-                <p>
-                    Para sa opisyal na ulat panahon mula sa PAGASA, laging bisitahin ang kanilang website:
-                    <a href="https://www.pagasa.dost.gov.ph/weather" class="text-[#56A0EE] hover:underline"
-                        target="_blank" rel="noopener noreferrer">PAGASA Weather Forecast</a>.
+        <section v-if="pagasaData" class="mt-8">
+            <div  class="bg-white p-6 shadow rounded-xl text-sm text-gray-600">
+                <h2 class="text-2xl font-bold text-gray-600 mb-4">PAGASA Daily Weather Forecast</h2>
+                <p v-if="pagasaData.issued_at" class="mb-2"><strong>Issued At:</strong> {{ pagasaData.issued_at }}</p>
+                <p v-if="pagasaData.synopsis" class="mb-4"><strong>Synopsis:</strong> {{ pagasaData.synopsis }}</p>
+
+                <Disclosure v-slot="{ open }">
+                    <DisclosureButton
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        <h3 class="font-bold text-gray-600">Forecast Weather Conditions</h3>
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </DisclosureButton>
+                    <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
+                        <div v-if="pagasaData.forecast_weather_conditions && pagasaData.forecast_weather_conditions.length"
+                            class="overflow-x-auto mb-4">
+                            <table class="min-w-full bg-white border border-gray-300">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Place</th>
+                                        <th class="py-2 px-4 border-b">Weather Condition</th>
+                                        <th class="py-2 px-4 border-b">Caused By</th>
+                                        <th class="py-2 px-4 border-b">Impacts</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(condition, index) in pagasaData.forecast_weather_conditions"
+                                        :key="index">
+                                        <td class="py-2 px-4 border-b">{{ condition.place }}</td>
+                                        <td class="py-2 px-4 border-b">{{ condition.weather_condition }}</td>
+                                        <td class="py-2 px-4 border-b">{{ condition.caused_by }}</td>
+                                        <td class="py-2 px-4 border-b">{{ condition.impacts }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </DisclosurePanel>
+                </Disclosure>
+
+                <Disclosure v-slot="{ open }">
+                    <DisclosureButton
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        <h3 class="font-bold text-gray-600">Forecast Wind and Coastal Water Conditions</h3>
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </DisclosureButton>
+                    <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
+                        <div v-if="pagasaData.forecast_wind_conditions && pagasaData.forecast_wind_conditions.length"
+                            class="overflow-x-auto mb-4">
+                            <table class="min-w-full bg-white border border-gray-300">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Place</th>
+                                        <th class="py-2 px-4 border-b">Speed</th>
+                                        <th class="py-2 px-4 border-b">Direction</th>
+                                        <th class="py-2 px-4 border-b">Coastal Water</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(wind, index) in pagasaData.forecast_wind_conditions" :key="index">
+                                        <td class="py-2 px-4 border-b">{{ wind.place }}</td>
+                                        <td class="py-2 px-4 border-b">{{ wind.speed }}</td>
+                                        <td class="py-2 px-4 border-b">{{ wind.direction }}</td>
+                                        <td class="py-2 px-4 border-b">{{ wind.coastal_water }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </DisclosurePanel>
+                </Disclosure>
+
+                <Disclosure v-slot="{ open }">
+                    <DisclosureButton
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        <h3 class="font-bold text-gray-600">Temperature and Relative Humidity</h3>
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </DisclosureButton>
+                    <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
+                        <div v-if="pagasaData.temperature_humidity" class="overflow-x-auto mb-4">
+                            <table class="min-w-full bg-white border border-gray-300">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Metric</th>
+                                        <th class="py-2 px-4 border-b">Max Value</th>
+                                        <th class="py-2 px-4 border-b">Max Time</th>
+                                        <th class="py-2 px-4 border-b">Min Value</th>
+                                        <th class="py-2 px-4 border-b">Min Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(temp, metric) in pagasaData.temperature_humidity" :key="metric">
+                                        <td class="py-2 px-4 border-b">{{ metric }}</td>
+                                        <td class="py-2 px-4 border-b">{{ temp.max.value }}</td>
+                                        <td class="py-2 px-4 border-b">{{ temp.max.time }}</td>
+                                        <td class="py-2 px-4 border-b">{{ temp.min.value }}</td>
+                                        <td class="py-2 px-4 border-b">{{ temp.min.time }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </DisclosurePanel>
+                </Disclosure>
+
+                <Disclosure v-slot="{ open }">
+                    <DisclosureButton
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        <h3 class="font-bold text-gray-600">Tides and Astronomical Information</h3>
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </DisclosureButton>
+                    <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
+                        <div v-if="pagasaData.astronomical_information" class="mb-4">
+                            <ul class="list-disc list-inside">
+                                <li v-for="(value, key) in pagasaData.astronomical_information" :key="key">
+                                    <strong>{{ key }}:</strong> {{ value }}
+                                </li>
+                            </ul>
+                        </div>
+                        <h4 class="font-bold text-gray-600 mb-2">Tidal Predictions</h4>
+                        <div v-if="pagasaData.tidal_predictions && pagasaData.tidal_predictions.length"
+                            class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-300">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Type</th>
+                                        <th class="py-2 px-4 border-b">Value</th>
+                                        <th class="py-2 px-4 border-b">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(tidal, index) in pagasaData.tidal_predictions" :key="index">
+                                        <td class="py-2 px-4 border-b">{{ tidal.type }}</td>
+                                        <td class="py-2 px-4 border-b">{{ tidal.value }}</td>
+                                        <td class="py-2 px-4 border-b">{{ tidal.time }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </DisclosurePanel>
+                </Disclosure>
+                <p class="text-sm text-gray-500 mt-4">
+                    Data source:
+                    <a href="https://www.pagasa.dost.gov.ph/weather#daily-weather-forecast" target="_blank"
+                        rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 underline">
+                        PAGASA - Philippine Atmospheric, Geophysical and Astronomical Services
+                        Administration
+                    </a>
                 </p>
-            </div>
-        </section>
-
-
-        <section class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Weather Advice -->
-            <div class="p-6 shadow rounded-xl bg-gray-50">
-                <h2 class="font-bold text-gray-800 mb-4">Weather Advice</h2>
-                <div class="grid grid-cols-1 gap-6">
-                    <div>
-                        <h3 class="font-bold text-green-600 mb-2">Mga Dapat Gawin (Do's)</h3>
-                        <ul class="space-y-2 text-gray-700">
-                            <li v-for="(item, index) in getWeatherAdvice(weatherData.current.condition.text).dos"
-                                :key="index" class="flex items-start">
-                                <svg class="w-5 h-5 mr-2 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-sm">{{ item }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-red-600 mb-2">Mga Hindi Dapat Gawin (Don'ts)</h3>
-                        <ul class="space-y-2 text-gray-700">
-                            <li v-for="(item, index) in getWeatherAdvice(weatherData.current.condition.text).donts"
-                                :key="index" class="flex items-start">
-                                <svg class="w-5 h-5 mr-2 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-sm">{{ item }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGASA Warning Systems Explained -->
-            <div>
-                <div class="bg-gray-50 p-6 shadow rounded-xl h-full">
-                    <h2 class="font-bold text-gray-800 mb-4">PAGASA Warning Systems Explained</h2>
-                    <div class="grid grid-cols-1 gap-1">
-                        <Disclosure as="div" class="mb-2" v-slot="{ open }">
-                            <DisclosureButton
-                                class="flex w-full justify-between rounded-lg px-4 py-2 text-left text-sm font-bold text-blue-700 bg-blue-100 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75">
-                                <span>PAGASA Rainfall Warning System</span>
-                                <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500"
-                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </DisclosureButton>
-                            <DisclosurePanel class="px-4 pb-4 pt-4 text-sm text-gray-700">
-                                <p>Ang PAGASA Rainfall Warning System ay gumagamit ng mga kulay na alerto upang ipaalam
-                                    sa publiko ang tindi ng pag-ulan at ang posibleng epekto nito.</p>
-
-                                <div class="mt-3 space-y-3">
-                                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 ">
-                                        <p class="font-semibold">YELLOW WARNING (DILAW NA BABALA):</p>
-                                        <p>5.0 mm hanggang 7.5 mm ng ulan sa nakalipas na 3 oras o inaasahan sa susunod
-                                            na 3 oras. <span class="font-bold">Posible ang pagbaha sa mabababang
-                                                lugar.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: Manatiling updated.</em></p>
-                                    </div>
-                                    <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-3 ">
-                                        <p class="font-semibold">ORANGE WARNING (ORANGE NA BABALA):</p>
-                                        <p>7.5 mm hanggang 15 mm ng ulan sa nakalipas na 3 oras o inaasahan sa susunod
-                                            na 3 oras. <span class="font-bold">Nagbabanta ang pagbaha.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: Maging alerto para sa posibleng
-                                                paglikas.</em></p>
-                                    </div>
-                                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 ">
-                                        <p class="font-semibold">RED WARNING (PULANG BABALA):</p>
-                                        <p>Mahigit 15 mm ng ulan sa nakalipas na 3 oras o inaasahan sa susunod na 3
-                                            oras. <span class="font-bold">Malubhang pagbaha ang inaasahan sa mabababang
-                                                lugar at posible ang pagguho ng lupa.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: Lumikas kaagad.</em></p>
-                                    </div>
-                                </div>
-                            </DisclosurePanel>
-                        </Disclosure>
-
-                        <Disclosure as="div" class="" v-slot="{ open }">
-                            <DisclosureButton
-                                class="flex w-full justify-between rounded-lg px-4 py-2 text-left text-sm font-bold text-green-700 bg-green-100 focus:outline-none focus-visible:ring focus-visible:ring-green-500/75">
-                                <span>Public Storm Warning Signals (PSWS)</span>
-                                <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-green-500"
-                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </DisclosureButton>
-                            <DisclosurePanel class="px-4 pb-4 pt-4 text-sm text-gray-700">
-                                <p>Ang Public Storm Warning Signals (PSWS) ay nagpapahiwatig ng lakas ng isang bagyo at
-                                    ang posibleng epekto nito.</p>
-
-                                <div class="mt-3 space-y-3">
-                                    <div class="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-3 ">
-                                        <p class="font-semibold">PSWS #1:</p>
-                                        <p>Hangin na 30-60 kph ang inaasahan sa loob ng 36 oras. <span
-                                                class="font-bold">Walang pinsala hanggang sa napakagaan na
-                                                pinsala.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: Manatiling updated. Maghanda para sa malakas
-                                                na hangin.</em>
-                                        </p>
-                                    </div>
-                                    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-3 ">
-                                        <p class="font-semibold">PSWS #2:</p>
-                                        <p>Hangin na 61-120 kph ang inaasahan sa loob ng 24 oras. <span
-                                                class="font-bold">Magaan hanggang sa katamtamang pinsala.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: I-secure ang mga bahay, maghanda para sa
-                                                paglikas.</em>
-                                        </p>
-                                    </div>
-                                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 ">
-                                        <p class="font-semibold">PSWS #3:</p>
-                                        <p>Hangin na 121-170 kph ang inaasahan sa loob ng 18 oras. <span
-                                                class="font-bold">Katamtaman hanggang sa malubhang pinsala.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: Lumikas sa mas ligtas na lugar.</em></p>
-                                    </div>
-                                    <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-3 ">
-                                        <p class="font-semibold">PSWS #4:</p>
-                                        <p>Hangin na 171-220 kph ang inaasahan sa loob of 12 oras. <span
-                                                class="font-bold">Malubha hanggang sa napakalubhang pinsala.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: Lubos na pag-iingat. Kritikal ang
-                                                paglikas.</em>
-                                        </p>
-                                    </div>
-                                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 ">
-                                        <p class="font-semibold">PSWS #5:</p>
-                                        <p>Hangin na higit sa 220 kph ang inaasahan sa loob ng 12 oras. <span
-                                                class="font-bold">Napakalubha hanggang sa malawakang pinsala.</span></p>
-                                        <p class="text-sm mt-1"><em>Aksyon: Malaking epekto. Manatili sa loob ng ligtas
-                                                na istraktura.</em></p>
-                                    </div>
-                                </div>
-                            </DisclosurePanel>
-                        </Disclosure>
-                    </div>
-                </div>
             </div>
         </section>
     </div>
@@ -357,8 +370,8 @@ const props = defineProps({
     getWeatherIcon: Function,
     formatDate: Function,
     formatDateTime: Function,
-    getWeatherAdvice: Function,
     formatTime: Function,
+    pagasaData: Object,
 })
 
 const nextDayWeatherTip = computed(() => {
@@ -391,7 +404,7 @@ const nextDayWeatherTip = computed(() => {
 
 const getWindWarningBadge = (wind_kph) => {
     let label = "Normal";
-    let color = "bg-gray-200 text-gray-800";
+    let color = "bg-gray-200 text-gray-600";
     let dotColor = "bg-gray-500"; // Default dot color
 
     if (wind_kph >= 30 && wind_kph <= 60) {
