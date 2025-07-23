@@ -73,7 +73,7 @@
                 </div>
                 <div class="grid grid-cols-2 gap-y-2 w-full mt-4 text-xs text-gray-500">
                     <div class="flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        <svg class="w-6 h-6 mr-2 text-[#56A0EE]" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -81,7 +81,7 @@
                         <span>{{ weatherData.current.humidity }}% Humidity</span>
                     </div>
                     <div class="flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        <svg class="w-5 h-5 mr-2 text-[#56A0EE]" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
@@ -115,7 +115,7 @@
             <!-- 3-Day Forecast -->
             <div class="lg:col-span-2 bg-white p-8 rounded-xl shadow">
                 <h2 class="text-2xl font-bold text-gray-600 mb-4">3-Day Forecast</h2>
-                <p class="text-sm text-gray-500 mb-4">Weather forecast for the next three days</p>
+                <!-- <p class="text-sm text-gray-500 mb-4">Weather forecast for the next three days</p> -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div v-for="day in weatherData.forecast.forecastday" :key="day.date"
                         class="text-center p-4 bg-gray-50 shadow rounded-lg">
@@ -143,7 +143,7 @@
             <!-- Hourly Forecast with Tabs -->
             <div class="lg:col-span-3 bg-white p-8 rounded-xl shadow mt-4">
                 <h2 class="text-2xl font-bold text-gray-600 mb-4">Hourly Forecast</h2>
-                <p class="text-sm text-gray-500 mb-4">Weather forecast for the next 24 hours</p>
+                <!-- <p class="text-sm text-gray-500 mb-4">Weather forecast for the next 24 hours</p> -->
                 <TabGroup>
                     <TabList class="flex space-x-1 rounded-xl bg-gray-300/20 p-1 ">
                         <Tab v-for="day in weatherData.forecast.forecastday" :key="day.date" as="template"
@@ -184,16 +184,22 @@
         </div>
 
         <section v-if="pagasaData" class="mt-8">
-            <div  class="bg-white p-6 shadow rounded-xl text-sm text-gray-600">
-                <h2 class="text-2xl font-bold text-gray-600 mb-4">PAGASA Daily Weather Forecast</h2>
-                <p v-if="pagasaData.issued_at" class="mb-2"><strong>Issued At:</strong> {{ pagasaData.issued_at }}</p>
-                <p v-if="pagasaData.synopsis" class="mb-4"><strong>Synopsis:</strong> {{ pagasaData.synopsis }}</p>
+            <div class="relative bg-white p-6 shadow rounded-xl text-sm text-gray-600">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Philippine_Atmospheric%2C_Geophysical_and_Astronomical_Services_Administration_%28PAGASA%29_logo.svg"
+                    alt="Logo" class="absolute -top-2 -right-3 h-14 w-14 rotate-12">
+
+                <h2 class="text-2xl font-bold text-gray-600 mb-4">PAGASA <span class="md:bg-gradient-to-r md:from-[#CD9E73] md:to-[#56A0EE] md:bg-clip-text md:text-transparent">Daily Weather Forecast</span></h2>
+                <p v-if="pagasaData.issued_at" class="mb-2 px-2 py-0 rounded-full bg-gray-200 font-semibold w-fit">
+                    {{ pagasaData.issued_at }}</p>
+                <p v-if="pagasaData.synopsis" class="mb-4"><span class="font-bold">Synopsis:</span> {{
+                    pagasaData.synopsis
+                    }}</p>
 
                 <Disclosure v-slot="{ open }">
                     <DisclosureButton
-                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-[#56A0EE]/75 mb-2">
                         <h3 class="font-bold text-gray-600">Forecast Weather Conditions</h3>
-                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-[#56A0EE]" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
@@ -226,9 +232,9 @@
 
                 <Disclosure v-slot="{ open }">
                     <DisclosureButton
-                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-[#56A0EE]/75 mb-2">
                         <h3 class="font-bold text-gray-600">Forecast Wind and Coastal Water Conditions</h3>
-                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-[#56A0EE]" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
@@ -260,9 +266,9 @@
 
                 <Disclosure v-slot="{ open }">
                     <DisclosureButton
-                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-[#56A0EE]/75 mb-2">
                         <h3 class="font-bold text-gray-600">Temperature and Relative Humidity</h3>
-                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-[#56A0EE]" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
@@ -295,9 +301,9 @@
 
                 <Disclosure v-slot="{ open }">
                     <DisclosureButton
-                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75 mb-2">
+                        class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-[#56A0EE]/75 mb-2">
                         <h3 class="font-bold text-gray-600">Tides and Astronomical Information</h3>
-                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-blue-500" fill="none"
+                        <svg :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-[#56A0EE]" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
@@ -413,8 +419,8 @@ const getWindWarningBadge = (wind_kph) => {
         dotColor = "bg-gray-500";
     } else if (wind_kph >= 61 && wind_kph <= 120) {
         label = "PSWS #2";
-        color = "bg-blue-500 text-white";
-        dotColor = "bg-blue-500";
+        color = "bg-[#56A0EE] text-white";
+        dotColor = "bg-[#56A0EE]";
     } else if (wind_kph >= 121 && wind_kph <= 170) {
         label = "PSWS #3";
         color = "bg-yellow-500 text-white";

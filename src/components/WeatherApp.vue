@@ -34,6 +34,7 @@ const alerts = ref(null)
 const pagasaData = ref(null)
 let advisoryInterval = null
 
+const apiPagasa = import.meta.env.VITE_PAGASA_DAILY_FORECAST
 // Replace with your API key
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY
 const NCR_CODE = '130000000'
@@ -229,26 +230,26 @@ const fetchPagasaData = async () => {
     loading.value = true
     error.value = null
     try {
-        const response = await axios.get('https://pagasa-forecast-api.vercel.app/api/pagasa-forecast')
+        const response = await axios.get(`${apiPagasa}`)
         pagasaData.value = response.data
     } catch (err) {
         // More detailed error logging
-        // if (err.response) {
-        //     // The request was made and the server responded with a status code
-        //     // that falls out of the range of 2xx
-        //     error.value = `Error fetching PAGASA data: Server responded with status ${err.response.status} - ${err.response.data.message || err.response.statusText}`;
-        //     console.error('PAGASA API Error Response:', err.response.data);
-        // } else if (err.request) {
-        //     // The request was made but no response was received
-        //     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        //     // http.ClientRequest in node.js
-        //     error.value = 'Error fetching PAGASA data: No response received from server. Check if the API is running and accessible.';
-        //     console.error('PAGASA API Request Error:', err.request);
-        // } else {
-        //     // Something happened in setting up the request that triggered an Error
-        //     error.value = `Error fetching PAGASA data: ${err.message}`;
-        //     console.error('PAGASA API Axios Error:', err.message);
-        // }
+        if (err.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            error.value = `Error fetching PAGASA data: Server responded with status ${err.response.status} - ${err.response.data.message || err.response.statusText}`;
+            console.error('PAGASA API Error Response:', err.response.data);
+        } else if (err.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            error.value = 'Error fetching PAGASA data: No response received from server. Check if the API is running and accessible.';
+            console.error('PAGASA API Request Error:', err.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            error.value = `Error fetching PAGASA data: ${err.message}`;
+            console.error('PAGASA API Axios Error:', err.message);
+        }
         console.error("PAGASA API Error Response:", err.response.data); // Log the full error object for detailed debugging
     } finally {
         loading.value = false
